@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,6 +19,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var password:String
     lateinit var flag:String
     var UID:String = ""
+
+    var db = FirebaseFirestore.getInstance()
+    var userData: MutableMap<String, Any> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,8 +87,19 @@ class MainActivity : AppCompatActivity() {
             UID = fUser.uid.toString()
             when (flag){
                 "註冊" -> {
-                    Toast.makeText(baseContext, "恭喜您註冊成功\n您的UID為：" + UID,
-                            Toast.LENGTH_LONG).show()
+                    userData["名字"] = edtEmail.text.toString()
+                    userData["分數"] = 0
+                    db.collection("Users")
+                            .document(UID)
+                            .set(userData)
+                            .addOnSuccessListener {
+                                Toast.makeText(baseContext, "恭喜您註冊成功\n您的UID為：" + UID,
+                                        Toast.LENGTH_LONG).show()
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(baseContext, "註冊失敗：" + e.toString(),
+                                        Toast.LENGTH_LONG).show()
+                            }
                 }
                 "登入" -> {
                     Toast.makeText(baseContext, "恭喜您登入成功\n您的UID為：" + UID,
