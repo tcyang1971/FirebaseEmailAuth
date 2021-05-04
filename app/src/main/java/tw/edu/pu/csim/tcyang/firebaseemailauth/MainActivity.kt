@@ -81,7 +81,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        
+        //修改成績
+        btnChange.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(p0: View?) {
+                var user = auth.currentUser
+                if(user != null){
+                    flag="修改"
+                    updateUI(user)
+                }
+                else{
+                    Toast.makeText(baseContext, "請先登入再修改成績", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
 
     }
 
@@ -116,6 +128,21 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                 }
+
+                "修改" -> {
+                    userData["分數"] = edtScore.text.toString().toInt()
+                    db.collection("Users")
+                            //.add(user)
+                            .document(UID)
+                            .update(userData)
+                            .addOnSuccessListener {
+                                Toast.makeText(baseContext, "資料修改成功", Toast.LENGTH_LONG).show()
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(baseContext, "資料修改失敗：" + e.toString(), Toast.LENGTH_LONG).show()
+                            }
+                }
+
             }
         }
     }
