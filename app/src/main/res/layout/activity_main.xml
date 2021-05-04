@@ -49,4 +49,31 @@
             android:text="登出" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text= "39"/>
+
+        <Button
+            android:id="@+id/btnChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改成績" />
+
+        <Button
+            android:id="@+id/btnHero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="顯示前三名" />
+
+    </LinearLayout>
+
 </LinearLayout>
