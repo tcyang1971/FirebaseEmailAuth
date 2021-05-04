@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -95,6 +96,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        btnHero.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(p0: View?) {
+                var user = auth.currentUser
+                if(user != null){
+                    flag="排名"
+                    updateUI(user)
+                }
+                else{
+                    Toast.makeText(baseContext, "請先登入再查詢成績", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
     }
 
     private fun updateUI(fUser: FirebaseUser?) {
@@ -142,6 +156,29 @@ class MainActivity : AppCompatActivity() {
                                 Toast.makeText(baseContext, "資料修改失敗：" + e.toString(), Toast.LENGTH_LONG).show()
                             }
                 }
+
+                "排名" -> {
+                    db.collection("Users")
+                            .orderBy("分數", Query.Direction.DESCENDING)
+                            .limit(3)
+                            .get()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    var msg:String = ""
+                                    for (document in task.result!!) {
+                                        msg += "名字：" + document.data["名字"] +
+                                                "\n成績：" + document.data["分數"].toString() + "\n\n"
+                                    }
+                                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                                }
+
+                                else{
+                                    Toast.makeText(baseContext, "查詢失敗：" + task.exception.toString(),
+                                            Toast.LENGTH_LONG).show()
+                                }
+                            }
+                }
+
 
             }
         }
