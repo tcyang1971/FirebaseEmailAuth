@@ -28,6 +28,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        btnReg.isEnabled = true
+        btnLogIn.isEnabled = true
+        btnLogOut.isEnabled = false
+        btnChange.isEnabled = false
+        btnHero.isEnabled = false
+
         // 獲取FirebaseAuth對象的共享實例
         auth = Firebase.auth
 
@@ -79,6 +85,11 @@ class MainActivity : AppCompatActivity() {
                 Firebase.auth.signOut()
                 Toast.makeText(baseContext, "您已成功登出",
                         Toast.LENGTH_SHORT).show()
+                btnReg.isEnabled = true
+                btnLogIn.isEnabled = true
+                btnLogOut.isEnabled = false
+                btnChange.isEnabled = false
+                btnHero.isEnabled = false
             }
         })
 
@@ -113,6 +124,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(fUser: FirebaseUser?) {
         if (fUser != null) {
+            btnReg.isEnabled = false
+            btnLogIn.isEnabled = false
+            btnLogOut.isEnabled = true
+            btnChange.isEnabled = true
+            btnHero.isEnabled = true
+
             UID = fUser.uid.toString()
             when (flag){
                 "註冊" -> {
@@ -178,9 +195,8 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                 }
-
-
             }
+
         }
     }
 
