@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
             }
         })
+
+        
+
     }
 
     private fun updateUI(fUser: FirebaseUser?) {
@@ -102,8 +105,16 @@ class MainActivity : AppCompatActivity() {
                             }
                 }
                 "登入" -> {
-                    Toast.makeText(baseContext, "恭喜您登入成功\n您的UID為：" + UID,
-                            Toast.LENGTH_LONG).show()
+                    //讀取資料
+                    db.collection("Users")
+                            .document(UID)
+                            .get()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val msg = "恭喜您登入成功\n您的成績為：" + task.result!!.data?.get("分數").toString()
+                                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                                }
+                            }
                 }
             }
         }
