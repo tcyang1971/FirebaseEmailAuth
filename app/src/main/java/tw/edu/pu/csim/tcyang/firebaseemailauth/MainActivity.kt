@@ -78,7 +78,20 @@ class MainActivity : AppCompatActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 val user = auth.currentUser
-                                updateUI(user)
+
+                                //確認使用者是否已通過認證
+                                if (user.isEmailVerified){
+                                    updateUI(user)
+                                    btnReg.isEnabled = false
+                                    btnLogIn.isEnabled = false
+                                    btnLogOut.isEnabled = true
+                                    btnChange.isEnabled = true
+                                    btnHero.isEnabled = true
+                                }
+                                else{
+                                    Toast.makeText(baseContext, "您尚未完成驗證程序，無法登入喔！",
+                                            Toast.LENGTH_SHORT).show()
+                                }
                             } else {
                                 Toast.makeText(baseContext, "登入失敗：" + task.exception?.message,
                                         Toast.LENGTH_SHORT).show()
@@ -214,8 +227,20 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         var user = auth.currentUser
         if(user != null){
-            flag="登入"
-            updateUI(user)
+            //確認使用者是否已通過認證
+            if (user.isEmailVerified){
+                flag="登入"
+                updateUI(user)
+                btnReg.isEnabled = false
+                btnLogIn.isEnabled = false
+                btnLogOut.isEnabled = true
+                btnChange.isEnabled = true
+                btnHero.isEnabled = true
+            }
+            else{
+                Toast.makeText(baseContext, "您尚未完成驗證程序，無法登入喔！",
+                        Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
