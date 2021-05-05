@@ -49,6 +49,15 @@ class MainActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 val user = auth.currentUser
                                 updateUI(user)
+
+                                //寄送驗證信
+                                user!!.sendEmailVerification()
+                                        .addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                Toast.makeText(baseContext, "請至您的信箱收信完成驗證程序",
+                                                        Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                             } else {
                                 Toast.makeText(baseContext, "註冊失敗：" + task.exception?.message,
                                         Toast.LENGTH_SHORT).show()
@@ -124,11 +133,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(fUser: FirebaseUser?) {
         if (fUser != null) {
-            btnReg.isEnabled = false
-            btnLogIn.isEnabled = false
-            btnLogOut.isEnabled = true
-            btnChange.isEnabled = true
-            btnHero.isEnabled = true
+            //btnReg.isEnabled = false
+            //btnLogIn.isEnabled = false
+            //btnLogOut.isEnabled = true
+            //btnChange.isEnabled = true
+            //btnHero.isEnabled = true
 
             UID = fUser.uid.toString()
             when (flag){
@@ -139,8 +148,8 @@ class MainActivity : AppCompatActivity() {
                             .document(UID)
                             .set(userData)
                             .addOnSuccessListener {
-                                Toast.makeText(baseContext, "恭喜您註冊成功\n您的UID為：" + UID,
-                                        Toast.LENGTH_LONG).show()
+                                //Toast.makeText(baseContext, "恭喜您註冊成功\n您的UID為：" + UID,
+                                //        Toast.LENGTH_LONG).show()
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(baseContext, "註冊失敗：" + e.toString(),
