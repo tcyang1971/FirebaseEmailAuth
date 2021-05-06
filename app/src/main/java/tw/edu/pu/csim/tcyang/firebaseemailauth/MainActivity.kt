@@ -142,6 +142,20 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
+        //忘記密碼
+        btnForget.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(p0: View?) {
+                email = edtEmail.text.toString()
+                auth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(baseContext, "請至信箱收信並重設密碼", Toast.LENGTH_LONG).show()
+                            }
+                        }
+            }
+        })
+
     }
 
     private fun updateUI(fUser: FirebaseUser?) {

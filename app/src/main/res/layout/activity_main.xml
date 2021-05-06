@@ -76,4 +76,10 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnForget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘記密碼" />
+
 </LinearLayout>
